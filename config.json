@@ -1,0 +1,37 @@
+{
+  "app": {
+    "name": "edot-user-service"
+  },
+  "web": {
+    "prefork": false,
+    "port": 3100
+  },
+  "log": {
+    "level": 7
+  },
+  "database": {
+    "username": "myuser",
+    "password": "mypassword",
+    "host": "127.0.0.1",
+    "port": "5433",
+    "name": "edot_user_db",
+    "pool": {
+      "iddle": 10,
+      "max": 100,
+      "lifetime": 1800
+    }
+  },
+  "kafka": {
+    "bootstrap": {
+      "servers": "localhost:9093"
+    },
+    "group": {
+      "id": "edot_user_service"
+    },
+    "auto": {
+      "offset": {
+        "reset": "earliest"
+      }
+    }
+  }
+}
