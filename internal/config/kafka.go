@@ -1,33 +1,23 @@
 package config
 
 import (
-	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"github.com/segmentio/kafka-go"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
-func NewKafkaConsumer(config *viper.Viper, log *logrus.Logger) *kafka.Consumer {
-	kafkaConfig := &kafka.ConfigMap{
-		"bootstrap.servers": config.GetString("kafka.bootstrap.servers"),
-		"group.id":          config.GetString("kafka.group.id"),
-		"auto.offset.reset": config.GetString("kafka.auto.offset.reset"),
+func NewKafkaReader(config *viper.Viper, log *logrus.Logger) *kafka.Reader {
+	readerConfig := kafka.ReaderConfig{
+		Brokers:     config.GetStringSlice("kafka.servers"),
+		GroupID:     config.GetString("kafka.group.id"),
+		GroupTopics: config.GetStringSlice("kafka.consumers"),
 	}
-
-	consumer, err := kafka.NewConsumer(kafkaConfig)
-	if err != nil {
-		log.Fatalf("Failed to create consumer: %v", err)
-	}
-	return consumer
+	return kafka.NewReader(readerConfig)
 }
 
-func NewKafkaProducer(config *viper.Viper, log *logrus.Logger) *kafka.Producer {
-	kafkaConfig := &kafka.ConfigMap{
-		"bootstrap.servers": config.GetString("kafka.bootstrap.servers"),
+func NewKafkaWriter(config *viper.Viper, log *logrus.Logger) *kafka.Writer {
+	return &kafka.Writer{
+		Addr:                   kafka.TCP(config.GetStringSlice("kafka.servers")...),
+		AllowAutoTopicCreation: true,
 	}
-
-	producer, err := kafka.NewProducer(kafkaConfig)
-	if err != nil {
-		log.Fatalf("Failed to create producer: %v", err)
-	}
-	return producer
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"edot-monorepo/services/user-service/internal/entity"
 	"edot-monorepo/services/user-service/internal/model"
-	"edot-monorepo/services/user-service/internal/model/converter"
 
 	"github.com/gofiber/fiber/v2"
 	"golang.org/x/crypto/bcrypt"
@@ -58,10 +57,25 @@ func (c *UserRegisterUseCase) Exec(ctx context.Context, request *model.UserRegis
 		return nil, fiber.ErrInternalServerError
 	}
 
+	token, err := c.GenerateToken(&model.User{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+	}, "")
+	if err != nil {
+		c.Log.Warnf("Error generate token : %+v", err)
+	}
+
 	if err := tx.Commit().Error; err != nil {
 		c.Log.Warnf("Failed commit transaction : %+v", err)
 		return nil, fiber.ErrInternalServerError
 	}
 
-	return converter.UserToResponse(user), nil
+	return &model.UserResponse{
+		ID:        user.ID,
+		Email:     user.Email,
+		Token:     token,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}, nil
 }

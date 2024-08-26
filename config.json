@@ -9,6 +9,9 @@
   "log": {
     "level": 7
   },
+  "kong": {
+    "jwt-consumer": "http://localhost:8001"
+  },
   "database": {
     "username": "myuser",
     "password": "mypassword",

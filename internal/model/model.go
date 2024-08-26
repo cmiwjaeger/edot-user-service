@@ -4,7 +4,7 @@ package model
 // @Description WebResponse is a generic response wrapper
 // @Success 200 {object} WebResponse
 type WebResponse[T any] struct {
-	Status  string        `json:"status"`
+	Status  string        `json:"status" default:"success"`
 	Message string        `json:"message"`
 	Data    T             `json:"data"`
 	Paging  *PageMetadata `json:"paging,omitempty"`

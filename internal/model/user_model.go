@@ -7,11 +7,11 @@ import (
 )
 
 type User struct {
-	ID        uuid.UUID
-	Name      string
-	Email     string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID        uuid.UUID `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type UserLoginRequest struct {
@@ -27,8 +27,13 @@ type UserRegisterRequest struct {
 
 type UserResponse struct {
 	ID        uuid.UUID `json:"id,omitempty"`
-	Name      string    `json:"name,omitempty"`
+	Email     string    `json:"name,omitempty"`
 	Token     string    `json:"token,omitempty"`
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+}
+
+type AuthResponse struct {
+	Token string `json:"token"`
+	User  UserResponse
 }

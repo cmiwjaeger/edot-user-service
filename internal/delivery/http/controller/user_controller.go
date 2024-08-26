@@ -56,7 +56,7 @@ func (c *UserController) Login(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.UserResponse]{
+	return ctx.JSON(model.WebResponse[*model.AuthResponse]{
 		Data: response,
 	})
 
