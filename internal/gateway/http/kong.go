@@ -24,7 +24,6 @@ func (k *KongClient) CreateConsumer(data model.KongConsumerRequest) (*model.Kong
 
 	resp, err := k.HttpClient.R().EnableTrace().SetBody(data).SetResult(response).Post(fmt.Sprintf("%s/consumers/edot/jwt", k.BaseUrl))
 	curlCmdExecuted := resp.Request.GenerateCurlCommand()
-	fmt.Println(data)
 
 	// Explore curl command
 	fmt.Println("Curl Command:\n  ", curlCmdExecuted+"\n")
